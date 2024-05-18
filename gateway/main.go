@@ -15,6 +15,7 @@ func main() {
 	mux := http.NewServeMux()
 	handler := NewHandler()
 	handler.registerRoute(mux)
+	log.Printf("server is running at http://localhost%s\n", httpAddr)
 	if err := http.ListenAndServe(httpAddr, mux); err != nil {
 		log.Fatal("Failed to start http server.")
 	}
