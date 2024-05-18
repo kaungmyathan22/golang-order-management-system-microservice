@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"log"
 	"net"
 
@@ -20,9 +19,10 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	defer l.Close()
-	store := NewStore()
-	svc := NewService(store)
-	svc.CreateOrder(context.Background())
+	NewGRPCHandler(grpcServer)
+	// store := NewStore()
+	// svc := NewService(store)
+	// svc.CreateOrder(context.Background())
 	if err = grpcServer.Serve(l); err != nil {
 		log.Fatal(err.Error())
 	}
