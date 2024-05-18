@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/kaungmyathan22/golang-order-management-system-microservice/common"
 	"github.com/kaungmyathan22/golang-order-management-system-microservice/common/api"
 )
 
@@ -21,8 +22,13 @@ func (h *handler) registerRoute(mux *http.ServeMux) {
 }
 
 func (h *handler) HandleCreateOrder(w http.ResponseWriter, r *http.Request) {
+	var items []*api.ItemsWithQuantity
+	if err := common.ReadJSON(r, &items); err != nil {
+		common.WriteError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 	h.c.CreateOrder(r.Context(), &api.CreateOrderRequest{
 		CustomerID: r.URL.Query().Get("customerID"),
-		// Items: ,
+		Items:      items,
 	})
 }
